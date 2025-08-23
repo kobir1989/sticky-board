@@ -1,0 +1,19 @@
+# Version control
+**/.git
+**/.svn
+**/.hg
+
+# Dependencies
+**/node_modules
+
+# Build / cache artifacts
+build
+dist
+coverage
+.vite
+.cache
+
+# Logs and editor files
+*.log
+.idea
+.vscode
