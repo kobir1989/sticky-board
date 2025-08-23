@@ -1,0 +1,38 @@
+import { Button } from '@/components/ui/button';
+import { toggleSettingsPanel } from '@/redux/features/noteSlice';
+import { useAppDispatch } from '@/redux/hooks';
+import { Plus, Settings, Share2 } from 'lucide-react';
+
+const Navbar = () => {
+  const dispatch = useAppDispatch();
+
+  const handleToggleSettingsPanel = () => {
+    dispatch(toggleSettingsPanel());
+  };
+
+  return (
+    <nav className="fixed w-[98%] rounded-full bg-white/50 px-2 py-2 shadow-sm backdrop-blur-sm">
+      <div className="flex items-center justify-between">
+        <div className="flex h-[2rem] w-[2rem] items-center justify-center rounded-full bg-[#CAD5E2]">
+          <p className="">3</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button size="sm" variant="outline">
+            <Share2 />
+            Share
+          </Button>
+          <Button size="sm" variant="outline" onClick={handleToggleSettingsPanel}>
+            <Settings />
+            Settings
+          </Button>
+          <Button size="sm">
+            <Plus />
+            Add Note
+          </Button>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;

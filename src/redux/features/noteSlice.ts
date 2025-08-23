@@ -1,11 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = { note: [] };
+const initialState = { isShowSettingsPanel: false, note: [] };
 
 export const noteSlice = createSlice({
   name: 'noteSlice',
   initialState,
-  reducers: {}
+  reducers: {
+    toggleSettingsPanel: (state) => {
+      state.isShowSettingsPanel = !state.isShowSettingsPanel;
+    }
+  }
 });
+
+export const { toggleSettingsPanel } = noteSlice.actions;
 
 export default noteSlice.reducer;
