@@ -11,7 +11,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed w-[98%] rounded-full bg-white/50 px-2 py-2 shadow-sm backdrop-blur-sm">
+    <nav className="fixed w-[98%] rounded-full bg-white px-2 py-2 shadow-sm backdrop-blur-sm">
       <div className="flex items-center justify-between">
         <div className="flex h-[2rem] w-[2rem] items-center justify-center rounded-full bg-[#CAD5E2]">
           <p className="">3</p>

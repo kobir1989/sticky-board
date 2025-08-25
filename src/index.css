@@ -120,5 +120,8 @@
   }
 }
 body {
-  background: linear-gradient(120deg, rgba(246, 249, 253, 1) 0%, rgba(227, 234, 255, 1) 95%);
+  font-family: 'Handlee', cursive;
+  font-weight: 400;
+  font-style: normal;
+  background: linear-gradient(120deg, rgba(246, 249, 253, 1) 50%, rgba(227, 234, 255, 1) 95%);
 }

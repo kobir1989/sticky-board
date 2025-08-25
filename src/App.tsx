@@ -6,9 +6,8 @@ import { useAppSelector } from '@/redux/hooks';
 const App = () => {
   const { isShowSettingsPanel } = useAppSelector((store) => store.noteSlice);
   return (
-    <main className="p-4">
+    <main className="h-screen w-screen p-4">
       <Navbar />
-
       <AnimatePresence>{isShowSettingsPanel && <SettingsPanel />}</AnimatePresence>
     </main>
   );
