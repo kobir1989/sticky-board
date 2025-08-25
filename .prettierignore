@@ -1,19 +1,11 @@
-# Version control
-**/.git
-**/.svn
-**/.hg
-
-# Dependencies
-**/node_modules
-
-# Build / cache artifacts
-build
-dist
-coverage
-.vite
-.cache
-
-# Logs and editor files
-*.log
-.idea
+.husky
 .vscode
+dist
+node_modules
+public
+package.json
+package-lock.json
+yarn.lock
+tsconfig.json
+tsconfig.*.json
+vite.config.ts

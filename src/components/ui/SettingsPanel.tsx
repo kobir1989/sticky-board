@@ -1,10 +1,10 @@
+import { RotateCcw, Settings, X } from 'lucide-react';
+import * as motion from 'motion/react-client';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { DEFAULT_COLORS } from '@/constants';
 import { toggleSettingsPanel } from '@/redux/features/noteSlice';
 import { useAppDispatch } from '@/redux/hooks';
-import { RotateCcw, Settings, X } from 'lucide-react';
-import * as motion from 'motion/react-client';
 
 const SettingsPanel = () => {
   const dispatch = useAppDispatch();

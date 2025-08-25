@@ -39,6 +39,7 @@ export default tseslint.config([
           argsIgnorePattern: '^_'
         }
       ],
+      'react-refresh/only-export-components': 'off',
 
       // Sort imports
       'import/order': [
