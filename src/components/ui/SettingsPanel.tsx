@@ -96,7 +96,7 @@ const SettingsPanel = () => {
                     {DEFAULT_COLORS.map((color) => (
                       <div
                         key={color.id}
-                        className={`h-[3rem] w-[3rem] rounded-md border ${color.border} ${color.background}`}
+                        className={`h-[2rem] w-[2rem] rounded-md border ${color.border} ${color.background}`}
                       ></div>
                     ))}
                   </div>
