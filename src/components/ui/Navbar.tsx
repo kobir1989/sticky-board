@@ -17,7 +17,11 @@ const Navbar = () => {
       addNewNote({
         id: uuidv4(),
         text: '',
-        color: 'blue-100',
+        color: {
+          id: 'DEFAULT',
+          background: 'bg-amber-100',
+          border: 'border-amber-300'
+        },
         position: {
           x: generateRandomPosition().x,
           y: generateRandomPosition().y

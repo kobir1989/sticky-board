@@ -25,9 +25,9 @@ export const DEFAULT_COLORS = [
     border: 'border-teal-300'
   },
   {
-    id: 'BLUE',
-    background: 'bg-blue-100',
-    border: 'border-blue-300'
+    id: 'YELLOW',
+    background: 'bg-yellow-100',
+    border: 'border-yellow-300'
   },
   {
     id: 'FUCHSIA',
