@@ -16,3 +16,5 @@ export interface NoteTypes {
   position: PositionTypes;
   createdDate: string;
 }
+
+export type ChangeEvent = React.ChangeEvent<HTMLTextAreaElement>;

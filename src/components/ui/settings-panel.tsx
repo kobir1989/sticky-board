@@ -31,7 +31,7 @@ const SettingsPanel = () => {
         <div className="flex items-center justify-between rounded-t-xl bg-white/70 px-4 py-6">
           <div className="flex items-center gap-3">
             <div className="rounded-lg bg-blue-500 p-1 text-white">
-              <Settings />
+              <Settings size={15} />
             </div>
             <div>
               <h3>Settings</h3>
