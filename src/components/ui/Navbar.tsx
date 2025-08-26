@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Button } from '@/components/ui/button';
 import { toggleSettingsPanel, addNewNote } from '@/redux/features/noteSlice';
 import { useAppDispatch } from '@/redux/hooks';
-import { generateRandomPosition } from '@/utils';
+import { generateRandomPosition, getFormattedDateAndTime } from '@/utils';
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
@@ -18,14 +18,17 @@ const Navbar = () => {
         id: uuidv4(),
         text: '',
         color: 'blue-100',
-        position: { x: generateRandomPosition(), y: generateRandomPosition() },
-        createdDate: `${new Date().getTime()} - ${new Date().getDate()}/${new Date().getMonth()}/${new Date().getFullYear()}`
+        position: {
+          x: generateRandomPosition().x,
+          y: generateRandomPosition().y
+        },
+        createdDate: getFormattedDateAndTime()
       })
     );
   };
 
   return (
-    <nav className="fixed z-50 w-[98%] rounded-full bg-white px-2 py-2 shadow-sm backdrop-blur-sm">
+    <nav className="fixed z-10 w-[98%] rounded-full bg-white px-2 py-2 shadow-sm backdrop-blur-sm">
       <div className="flex items-center justify-between">
         <div className="flex h-[2rem] w-[2rem] items-center justify-center rounded-full bg-[#CAD5E2]">
           <p className="">3</p>

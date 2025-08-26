@@ -5,7 +5,7 @@ import { handleZoom } from '@/redux/features/noteSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 const ZoomControl = () => {
-  const { zoomLabel } = useAppSelector((store) => store.noteSlice);
+  const { scale } = useAppSelector((store) => store.noteSlice);
   const dispatch = useAppDispatch();
 
   const handleZoomChange = (value: number[]): void => {
@@ -20,13 +20,12 @@ const ZoomControl = () => {
     <div className="flex h-[3rem] w-[15rem] items-center justify-center gap-3 rounded-2xl bg-white/10 p-4 shadow-2xl backdrop-blur-sm">
       <div className="flex w-full gap-2">
         <Slider
-          defaultValue={[zoomLabel]}
-          max={10}
-          step={1}
+          max={3}
+          step={0.1}
           onValueChange={(value) => handleZoomChange(value)}
-          value={[zoomLabel]}
+          value={[scale]}
         />
-        <p className="text-[12px] text-gray-500">{zoomLabel}%</p>
+        <p className="text-[12px] text-gray-500">{Math.floor(scale * 100)}%</p>
       </div>
       <div className="h-full w-[3px] border-l border-gray-300"></div>
       <Button variant="ghost" onClick={handleResetZoom}>
