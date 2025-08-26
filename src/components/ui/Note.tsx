@@ -25,11 +25,18 @@ const Note = ({
   return (
     <motion.div
       className={`${isDraggedNoteId ? 'z-10' : ''} note-container flex min-h-[13rem] min-w-[16rem] cursor-move flex-col justify-between rounded-2xl border-2 shadow-2xl ${note.color.border} ${note.color.background} p-4`}
+      initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
       animate={{
-        rotate: isDraggedNoteId ? 2 : 0,
-        transform: isDraggedNoteId ? 'scale(0.9)' : 'scale(1)'
+        opacity: 1,
+        scale: isDraggedNoteId ? 0.9 : 1,
+        rotate: isDraggedNoteId ? 2 : 0
       }}
-      transition={{ type: 'spring', stiffness: 700, damping: 50 }}
+      transition={{
+        type: 'spring',
+        stiffness: 300,
+        damping: 15,
+        bounce: 0.6
+      }}
       style={{
         position: 'absolute',
         left: note.position.x,
