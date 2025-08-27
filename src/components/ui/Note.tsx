@@ -8,7 +8,7 @@ import type { ChangeEvent, ColorType, NoteTypes } from '@/types';
 interface NoteProps {
   onDeleteNote: (id: string) => void;
   note: NoteTypes;
-  onMouseDown: (e: React.MouseEvent, note: NoteTypes) => void;
+  // onMouseDown: (e: React.MouseEvent, note: NoteTypes) => void;
   onNoteTextChange: (e: ChangeEvent, note: NoteTypes) => void;
   onColorUpdate: (color: ColorType, note: NoteTypes) => void;
   isDraggedNoteId: boolean;
@@ -17,7 +17,7 @@ interface NoteProps {
 const Note = ({
   onDeleteNote,
   note,
-  onMouseDown,
+  // onMouseDown,
   isDraggedNoteId,
   onNoteTextChange,
   onColorUpdate
@@ -42,7 +42,7 @@ const Note = ({
         left: note.position.x,
         top: note.position.y
       }}
-      onMouseDown={(e) => onMouseDown(e, note)}
+      // onMouseDown={(e) => onMouseDown(e, note)}
     >
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -73,10 +73,13 @@ const Note = ({
           value={note.text}
           onChange={(e) => onNoteTextChange(e, note)}
           rows={5}
+          style={{ userSelect: 'none' }}
         />
       </div>
       <div>
-        <p className="text-[12px] font-bold text-gray-500">{note.createdDate}</p>
+        <p className="text-[12px] font-bold text-gray-500" style={{ userSelect: 'none' }}>
+          {note.createdDate}
+        </p>
       </div>
     </motion.div>
   );
