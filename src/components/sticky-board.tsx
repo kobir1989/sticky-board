@@ -1,70 +1,120 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import InfiniteGrid from '@/components/ui/infinite-grid';
 import Note from '@/components/ui/Note';
-import { handleZoom, removeNote, updateNotes } from '@/redux/features/noteSlice';
+import {
+  handleZoom,
+  removeNote,
+  updateBoardCord,
+  updateNoteCord,
+  updateNotes
+} from '@/redux/features/noteSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import type { ChangeEvent, ColorType, NoteTypes } from '@/types';
+import type { BoardRef, ChangeEvent, ColorType, NoteRef, NoteTypes } from '@/types';
 
 const StickyBoard = () => {
-  const { notes, scale } = useAppSelector((store) => store.noteSlice);
+  const {
+    notes,
+    scale,
+    isShowGrid,
+    x: boardX,
+    y: boardY
+  } = useAppSelector((store) => store.noteSlice);
   const dispatch = useAppDispatch();
-  const stickyBoardRef = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-  const [boardOffset, setBoardOffset] = useState({ x: 0, y: 0 });
+  const [activeDraggedNote, setActiveDraggedNote] = useState<null | string>(null);
+
+  const { current: stickyBoardRef } = useRef<BoardRef>({
+    isDragging: false,
+    startBoardCord: { x: 0, y: 0 },
+    startBoardMouseCord: { x: 0, y: 0 }
+  });
+  const { current: noteRef } = useRef<NoteRef>({
+    draggedNote: null,
+    startNoteCord: { x: 0, y: 0 },
+    startNoteMouseCord: { x: 0, y: 0 }
+  });
 
   // Zoom in and out
   const handleMouseWheel = (e: React.WheelEvent) => {
-    e.preventDefault(); // avoid page scroll
-
-    const rect = stickyBoardRef.current?.getBoundingClientRect();
-    if (!rect) return;
-
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-
+    e.preventDefault();
     const zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
     const newScale = scale * zoomFactor;
-
-    // adjust offset so zoom is centered at mouse position
-    const newOffsetX = mouseX - (mouseX - boardOffset.x) * (newScale / scale);
-    const newOffsetY = mouseY - (mouseY - boardOffset.y) * (newScale / scale);
-
-    setBoardOffset({ x: newOffsetX, y: newOffsetY });
     dispatch(handleZoom(newScale));
   };
 
-  // Mouse down starts the board drag
-  const handleGlobalMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    setDragStart({
-      x: e.clientX - boardOffset.x,
-      y: e.clientY - boardOffset.y
-    });
+  const handleMouseDownOnBoard = (e: React.MouseEvent) => {
+    // Return if note is Dragging
+    if (noteRef.draggedNote !== null) return;
+
+    stickyBoardRef.isDragging = true;
+    stickyBoardRef.startBoardMouseCord = { x: e.pageX, y: e.pageY };
+    stickyBoardRef.startBoardCord = { x: boardX, y: boardY };
   };
 
-  // Global move
-  const handleGlobalMouseMove = (e: MouseEvent) => {
-    if (!isDragging) return;
-    setBoardOffset({ x: e.clientX - dragStart.x, y: e.clientY - dragStart.y });
+  const handleMouseDownOnNote = useCallback((e: React.MouseEvent, note: NoteTypes) => {
+    e.stopPropagation();
+    noteRef.draggedNote = note;
+    noteRef.startNoteMouseCord = { x: e.pageX, y: e.pageY };
+    noteRef.startNoteCord = { x: note?.position.x, y: note?.position.y };
+    setActiveDraggedNote(note.id);
+  }, []);
+
+  const handleMouseMove = (e: MouseEvent) => {
+    // Board move
+    if (stickyBoardRef.isDragging) {
+      // get total dragged distance X,y
+      const boardDraggedDistanceX = (e.pageX - stickyBoardRef.startBoardMouseCord.x) / scale;
+      const boardDraggedDistanceY = (e.pageY - stickyBoardRef.startBoardMouseCord.y) / scale;
+
+      // caluclate how much dragged form start position
+      const updatedX = boardDraggedDistanceX + stickyBoardRef.startBoardCord.x;
+      const updatedY = boardDraggedDistanceY + stickyBoardRef.startBoardCord.y;
+
+      // update actual Board X,y
+      dispatch(updateBoardCord({ x: updatedX, y: updatedY }));
+    }
+
+    // Note Move
+    if (noteRef.draggedNote) {
+      // get total note dragged distance X,y
+      const noteDraggedDistanceX = (e.pageX - noteRef.startNoteMouseCord.x) / scale;
+      const noteDraggedDistanceY = (e.pageY - noteRef.startNoteMouseCord.y) / scale;
+
+      // caluclate how much note has dragged form start position
+      const updateNoteX = noteDraggedDistanceX + noteRef.startNoteCord.x;
+      const updateNoteY = noteDraggedDistanceY + noteRef.startNoteCord.y;
+      dispatch(
+        updateNoteCord({
+          id: noteRef.draggedNote.id,
+          x: updateNoteX,
+          y: updateNoteY
+        })
+      );
+    }
+  };
+
+  const handleMouseUp = () => {
+    setActiveDraggedNote(null);
+    stickyBoardRef.isDragging = false;
+    noteRef.draggedNote = null;
   };
 
   useEffect(() => {
-    const handleMouseUp = () => setIsDragging(false);
-
-    document.addEventListener('mousemove', handleGlobalMouseMove);
+    document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('mouseleave', handleMouseUp);
 
     return () => {
-      document.removeEventListener('mousemove', handleGlobalMouseMove);
+      document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mouseleave', handleMouseUp);
     };
-  }, [isDragging, dragStart]);
+  }, [scale, boardX, boardY]);
 
-  const handleDeleteNote = (id: string) => {
+  const handleDeleteNote = useCallback((id: string) => {
     dispatch(removeNote(id));
-  };
+  }, []);
 
-  const handleNoteTextChange = (e: ChangeEvent, note: NoteTypes) => {
+  const handleNoteTextChange = useCallback((e: ChangeEvent, note: NoteTypes) => {
     e.stopPropagation();
     dispatch(
       updateNotes({
@@ -72,28 +122,36 @@ const StickyBoard = () => {
         text: e.target.value
       })
     );
-  };
+  }, []);
 
-  const handleColorUpdate = (selectedColor: ColorType, selectedNote: NoteTypes) => {
+  const handleColorUpdate = useCallback((selectedColor: ColorType, selectedNote: NoteTypes) => {
     dispatch(
       updateNotes({
         ...selectedNote,
         color: selectedColor
       })
     );
-  };
+  }, []);
 
   return (
     <div
-      className="h-full w-full cursor-grab"
+      className="h-full w-full cursor-grab select-none"
       onWheel={(e) => handleMouseWheel(e)}
-      onMouseDown={(e) => handleGlobalMouseDown(e)}
+      onMouseDown={(e) => handleMouseDownOnBoard(e)}
     >
+      {isShowGrid && (
+        <InfiniteGrid
+          canvasCoordinates={{
+            x: boardX,
+            y: boardY,
+            scale
+          }}
+        />
+      )}
       <div
         className="h-full w-full"
-        ref={stickyBoardRef}
         style={{
-          transform: `translate(${boardOffset.x}px, ${boardOffset.y}px) scale(${scale})`,
+          transform: `translate(${boardX}px, ${boardY}px) scale(${scale})`,
           transformOrigin: '0 0'
         }}
       >
@@ -102,10 +160,10 @@ const StickyBoard = () => {
             key={note.id}
             onDeleteNote={handleDeleteNote}
             note={note}
-            // onMouseDown={handleMouseDown}
+            onMouseDown={handleMouseDownOnNote}
             onNoteTextChange={handleNoteTextChange}
             onColorUpdate={handleColorUpdate}
-            isDraggedNoteId={false}
+            isDraggedNoteId={note.id === activeDraggedNote}
           />
         ))}
       </div>

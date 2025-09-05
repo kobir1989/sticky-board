@@ -18,3 +18,25 @@ export interface NoteTypes {
 }
 
 export type ChangeEvent = React.ChangeEvent<HTMLTextAreaElement>;
+
+export type DefaultColorNote = {
+  id: string;
+  background: string;
+  border: string;
+};
+
+export interface BoardRef {
+  isDragging: boolean;
+  startBoardCord: PositionTypes;
+  startBoardMouseCord: PositionTypes;
+}
+
+export interface NoteRef {
+  draggedNote: null | NoteTypes;
+  startNoteCord: PositionTypes;
+  startNoteMouseCord: PositionTypes;
+}
+
+export interface UpdateNoteAction extends PositionTypes {
+  id: string;
+}

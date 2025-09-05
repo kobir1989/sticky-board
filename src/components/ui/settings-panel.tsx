@@ -3,14 +3,40 @@ import * as motion from 'motion/react-client';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { DEFAULT_COLORS } from '@/constants';
-import { toggleSettingsPanel } from '@/redux/features/noteSlice';
-import { useAppDispatch } from '@/redux/hooks';
+import {
+  resetSettings,
+  setDefaultColor,
+  toggleInfiniteGrid,
+  toggleMiniMap,
+  toggleSettingsPanel
+} from '@/redux/features/noteSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import type { DefaultColorNote } from '@/types';
 
 const SettingsPanel = () => {
   const dispatch = useAppDispatch();
+  const { defaultNoteColor, isShowGrid, isShowMiniMap } = useAppSelector(
+    (state) => state.noteSlice
+  );
 
   const handleCloseSettingsPanel = () => {
     dispatch(toggleSettingsPanel());
+  };
+
+  const handleSelectDefaultColor = (color: DefaultColorNote) => {
+    dispatch(setDefaultColor(color));
+  };
+
+  const handleToggleMiniMap = (checked: boolean) => {
+    dispatch(toggleMiniMap(checked));
+  };
+
+  const handleToggleGrid = (checked: boolean) => {
+    dispatch(toggleInfiniteGrid(checked));
+  };
+
+  const handleResetDefault = () => {
+    dispatch(resetSettings());
   };
 
   return (
@@ -56,7 +82,11 @@ const SettingsPanel = () => {
                   </p>
                 </div>
                 <div>
-                  <Switch />
+                  <Switch
+                    className="cursor-pointer"
+                    checked={isShowMiniMap}
+                    onCheckedChange={(checked) => handleToggleMiniMap(checked)}
+                  />
                 </div>
               </div>
               <div className="flex items-center justify-between">
@@ -67,24 +97,17 @@ const SettingsPanel = () => {
                   </p>
                 </div>
                 <div>
-                  <Switch />
+                  <Switch
+                    className="cursor-pointer"
+                    checked={isShowGrid}
+                    onCheckedChange={(checked) => handleToggleGrid(checked)}
+                  />
                 </div>
               </div>
             </div>
             <div className="flex flex-col gap-4">
               <div>
                 <h4>Notes</h4>
-              </div>
-              <div className="flex items-center justify-between">
-                <div>
-                  <h5 className="text-sm">Use default color</h5>
-                  <p className="line-clamp-1 text-[12px] text-gray-500">
-                    Use default color for new notes (when off, uses random colors)
-                  </p>
-                </div>
-                <div>
-                  <Switch />
-                </div>
               </div>
               <div className="flex items-center justify-between">
                 <div>
@@ -96,7 +119,8 @@ const SettingsPanel = () => {
                     {DEFAULT_COLORS.map((color) => (
                       <div
                         key={color.id}
-                        className={`h-[2rem] w-[2rem] rounded-md border ${color.border} ${color.background}`}
+                        onClick={() => handleSelectDefaultColor(color)}
+                        className={`h-[2rem] w-[2rem] scale-100 cursor-pointer rounded-md transition-all hover:scale-120 bg-${color.background} ${defaultNoteColor?.id === color.id ? 'border-3 border-gray-600' : `border-2 border-${color.border}`}`}
                       ></div>
                     ))}
                   </div>
@@ -106,7 +130,7 @@ const SettingsPanel = () => {
           </div>
 
           <div className="border-t border-t-white/20 py-4">
-            <Button variant="outline" className="w-full">
+            <Button variant="outline" className="w-full" onClick={handleResetDefault}>
               {' '}
               <RotateCcw />
               Reset to default
