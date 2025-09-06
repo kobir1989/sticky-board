@@ -7,6 +7,7 @@ export interface ColorType {
   id: string;
   background: string;
   border: string;
+  dark: string;
 }
 
 export interface NoteTypes {
@@ -18,12 +19,6 @@ export interface NoteTypes {
 }
 
 export type ChangeEvent = React.ChangeEvent<HTMLTextAreaElement>;
-
-export type DefaultColorNote = {
-  id: string;
-  background: string;
-  border: string;
-};
 
 export interface BoardRef {
   isDragging: boolean;

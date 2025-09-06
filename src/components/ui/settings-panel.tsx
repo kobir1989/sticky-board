@@ -11,7 +11,7 @@ import {
   toggleSettingsPanel
 } from '@/redux/features/noteSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import type { DefaultColorNote } from '@/types';
+import type { ColorType } from '@/types';
 
 const SettingsPanel = () => {
   const dispatch = useAppDispatch();
@@ -23,7 +23,7 @@ const SettingsPanel = () => {
     dispatch(toggleSettingsPanel());
   };
 
-  const handleSelectDefaultColor = (color: DefaultColorNote) => {
+  const handleSelectDefaultColor = (color: ColorType) => {
     dispatch(setDefaultColor(color));
   };
 
@@ -120,7 +120,7 @@ const SettingsPanel = () => {
                       <div
                         key={color.id}
                         onClick={() => handleSelectDefaultColor(color)}
-                        className={`h-[2rem] w-[2rem] scale-100 cursor-pointer rounded-md transition-all hover:scale-120 bg-${color.background} ${defaultNoteColor?.id === color.id ? 'border-3 border-gray-600' : `border-2 border-${color.border}`}`}
+                        className={`h-[2rem] w-[2rem] scale-100 cursor-pointer rounded-md transition-all hover:scale-120 ${color.background} ${defaultNoteColor?.id === color.id ? 'border-3 border-gray-600' : `border-2 ${color.border}`}`}
                       ></div>
                     ))}
                   </div>

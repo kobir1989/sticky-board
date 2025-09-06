@@ -35,7 +35,6 @@ const StickyBoard = () => {
 
   // Zoom in and out
   const handleMouseWheel = (e: React.WheelEvent) => {
-    e.preventDefault();
     const zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
     const newScale = scale * zoomFactor;
     dispatch(handleZoom(newScale));

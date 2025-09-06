@@ -1,12 +1,12 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { DEFAULT_COLOR, MAX_ZOOM, MIN_ZOOM } from '@/constants';
-import type { DefaultColorNote, NoteTypes, PositionTypes, UpdateNoteAction } from '@/types';
+import type { ColorType, NoteTypes, PositionTypes, UpdateNoteAction } from '@/types';
 
 interface InitialState {
   scale: number;
   x: number;
   y: number;
-  defaultNoteColor: DefaultColorNote;
+  defaultNoteColor: ColorType;
   isShowSettingsPanel: boolean;
   notes: NoteTypes[];
   isShowMiniMap: boolean;
@@ -48,7 +48,7 @@ export const noteSlice = createSlice({
         state.notes[index] = action.payload;
       }
     },
-    setDefaultColor: (state, action: PayloadAction<DefaultColorNote>) => {
+    setDefaultColor: (state, action: PayloadAction<ColorType>) => {
       state.defaultNoteColor = action.payload;
     },
     toggleMiniMap: (state, action: PayloadAction<boolean>) => {
@@ -74,6 +74,10 @@ export const noteSlice = createSlice({
         };
       }
     },
+    navigateBoardFromMiniMap: (state, { payload }: PayloadAction<{ x: number; y: number }>) => {
+      state.x = payload.x;
+      state.y = payload.y;
+    },
     resetSettings: (state) => {
       state.defaultNoteColor = DEFAULT_COLOR;
       state.isShowGrid = true;
@@ -94,7 +98,8 @@ export const {
   toggleMiniMap,
   resetSettings,
   updateBoardCord,
-  updateNoteCord
+  updateNoteCord,
+  navigateBoardFromMiniMap
 } = noteSlice.actions;
 
 export default noteSlice.reducer;
