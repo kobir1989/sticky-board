@@ -3,18 +3,45 @@ import * as motion from 'motion/react-client';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { DEFAULT_COLORS } from '@/constants';
-import { toggleSettingsPanel } from '@/redux/features/noteSlice';
+import {
+  resetSettings,
+  setDefaultColor,
+  toggleInfiniteGrid,
+  toggleMiniMap,
+  toggleSettingsPanel,
+  useNoteSlice
+} from '@/redux/features/noteSlice';
 import { useAppDispatch } from '@/redux/hooks';
+import type { ColorType } from '@/types';
 
 const SettingsPanel = () => {
   const dispatch = useAppDispatch();
+  const { defaultNoteColor, isShowGrid, isShowMiniMap } = useNoteSlice();
 
-  const handleCloseSettingsPanel = () => {
+  const handleCloseSettingsPanel = (e: React.MouseEvent) => {
+    e.stopPropagation();
     dispatch(toggleSettingsPanel());
+  };
+
+  const handleSelectDefaultColor = (color: ColorType) => {
+    dispatch(setDefaultColor(color));
+  };
+
+  const handleToggleMiniMap = (checked: boolean) => {
+    dispatch(toggleMiniMap(checked));
+  };
+
+  const handleToggleGrid = (checked: boolean) => {
+    dispatch(toggleInfiniteGrid(checked));
+  };
+
+  const handleResetDefault = () => {
+    dispatch(resetSettings());
   };
 
   return (
     <motion.div
+      onClick={(e) => handleCloseSettingsPanel(e)}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -22,6 +49,7 @@ const SettingsPanel = () => {
       className="fixed top-0 left-0 z-20 h-screen w-screen bg-black/10 backdrop-blur-sm"
     >
       <motion.div
+        onClick={(e) => e.stopPropagation()}
         initial={{ x: 300, rotate: 3, opacity: 0 }}
         animate={{ x: 0, rotate: 0, opacity: 1 }}
         exit={{ x: 300, rotate: 3, opacity: 1 }}
@@ -31,14 +59,18 @@ const SettingsPanel = () => {
         <div className="flex items-center justify-between rounded-t-xl bg-white/70 px-4 py-6">
           <div className="flex items-center gap-3">
             <div className="rounded-lg bg-blue-500 p-1 text-white">
-              <Settings />
+              <Settings size={15} />
             </div>
             <div>
               <h3>Settings</h3>
               <p className="text-sm text-gray-500">Customize your workspace</p>
             </div>
           </div>
-          <Button variant="ghost" className="text-gray-500" onClick={handleCloseSettingsPanel}>
+          <Button
+            variant="ghost"
+            className="text-gray-500"
+            onClick={(e) => handleCloseSettingsPanel(e)}
+          >
             <X />
           </Button>
         </div>
@@ -56,7 +88,11 @@ const SettingsPanel = () => {
                   </p>
                 </div>
                 <div>
-                  <Switch />
+                  <Switch
+                    className="cursor-pointer"
+                    checked={isShowMiniMap}
+                    onCheckedChange={(checked) => handleToggleMiniMap(checked)}
+                  />
                 </div>
               </div>
               <div className="flex items-center justify-between">
@@ -67,24 +103,17 @@ const SettingsPanel = () => {
                   </p>
                 </div>
                 <div>
-                  <Switch />
+                  <Switch
+                    className="cursor-pointer"
+                    checked={isShowGrid}
+                    onCheckedChange={(checked) => handleToggleGrid(checked)}
+                  />
                 </div>
               </div>
             </div>
             <div className="flex flex-col gap-4">
               <div>
                 <h4>Notes</h4>
-              </div>
-              <div className="flex items-center justify-between">
-                <div>
-                  <h5 className="text-sm">Use default color</h5>
-                  <p className="line-clamp-1 text-[12px] text-gray-500">
-                    Use default color for new notes (when off, uses random colors)
-                  </p>
-                </div>
-                <div>
-                  <Switch />
-                </div>
               </div>
               <div className="flex items-center justify-between">
                 <div>
@@ -96,7 +125,8 @@ const SettingsPanel = () => {
                     {DEFAULT_COLORS.map((color) => (
                       <div
                         key={color.id}
-                        className={`h-[3rem] w-[3rem] rounded-md border ${color.border} ${color.background}`}
+                        onClick={() => handleSelectDefaultColor(color)}
+                        className={`h-[2rem] w-[2rem] scale-100 cursor-pointer rounded-md transition-all hover:scale-120 ${color.background} ${defaultNoteColor?.id === color.id ? 'border-3 border-gray-600' : `border-2 ${color.border}`}`}
                       ></div>
                     ))}
                   </div>
@@ -106,7 +136,7 @@ const SettingsPanel = () => {
           </div>
 
           <div className="border-t border-t-white/20 py-4">
-            <Button variant="outline" className="w-full">
+            <Button variant="outline" className="w-full" onClick={handleResetDefault}>
               {' '}
               <RotateCcw />
               Reset to default
