@@ -6,8 +6,8 @@ import MiniMap from '@/components/ui/mini-map';
 import Navbar from '@/components/ui/Navbar';
 import SettingsPanel from '@/components/ui/settings-panel';
 import ZoomControl from '@/components/ui/zoom-control';
-import { addNewNote } from '@/redux/features/noteSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { addNewNote, useNoteSlice } from '@/redux/features/noteSlice';
+import { useAppDispatch } from '@/redux/hooks';
 import { generateRandomPosition, getFormattedDateAndTime } from '@/utils';
 
 interface StickyNotesLayoutProps {
@@ -15,9 +15,7 @@ interface StickyNotesLayoutProps {
 }
 
 const StickyNotesLayout = ({ children }: StickyNotesLayoutProps) => {
-  const { isShowSettingsPanel, isShowMiniMap, notes, defaultNoteColor, scale } = useAppSelector(
-    (store) => store.noteSlice
-  );
+  const { isShowSettingsPanel, isShowMiniMap, notes, defaultNoteColor, scale } = useNoteSlice();
   const dispatch = useAppDispatch();
 
   const handleAddNewNote = useCallback(() => {

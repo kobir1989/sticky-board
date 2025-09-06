@@ -8,16 +8,15 @@ import {
   setDefaultColor,
   toggleInfiniteGrid,
   toggleMiniMap,
-  toggleSettingsPanel
+  toggleSettingsPanel,
+  useNoteSlice
 } from '@/redux/features/noteSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useAppDispatch } from '@/redux/hooks';
 import type { ColorType } from '@/types';
 
 const SettingsPanel = () => {
   const dispatch = useAppDispatch();
-  const { defaultNoteColor, isShowGrid, isShowMiniMap } = useAppSelector(
-    (state) => state.noteSlice
-  );
+  const { defaultNoteColor, isShowGrid, isShowMiniMap } = useNoteSlice();
 
   const handleCloseSettingsPanel = (e: React.MouseEvent) => {
     e.stopPropagation();

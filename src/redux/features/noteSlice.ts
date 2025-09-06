@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { DEFAULT_COLOR, MAX_ZOOM, MIN_ZOOM } from '@/constants';
+import { useAppSelector } from '@/redux/hooks';
 import type { ColorType, NoteTypes, PositionTypes, UpdateNoteAction } from '@/types';
 
 interface InitialState {
@@ -101,5 +102,7 @@ export const {
   updateNoteCord,
   navigateBoardFromMiniMap
 } = noteSlice.actions;
+
+export const useNoteSlice = () => useAppSelector((store) => store.noteSlice);
 
 export default noteSlice.reducer;

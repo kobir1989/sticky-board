@@ -1,9 +1,9 @@
 import { MAP_SCALE, MAP_SIZE } from '@/constants';
-import { navigateBoardFromMiniMap } from '@/redux/features/noteSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { navigateBoardFromMiniMap, useNoteSlice } from '@/redux/features/noteSlice';
+import { useAppDispatch } from '@/redux/hooks';
 
 const MiniMap = () => {
-  const { notes, x, y, scale } = useAppSelector((store) => store.noteSlice);
+  const { notes, x, y, scale } = useNoteSlice();
   const dispatch = useAppDispatch();
 
   const toMapCoords = (canvasX: number, canvasY: number) => ({

@@ -1,11 +1,11 @@
 import { RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
-import { handleZoom } from '@/redux/features/noteSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { handleZoom, useNoteSlice } from '@/redux/features/noteSlice';
+import { useAppDispatch } from '@/redux/hooks';
 
 const ZoomControl = () => {
-  const { scale } = useAppSelector((store) => store.noteSlice);
+  const { scale } = useNoteSlice();
   const dispatch = useAppDispatch();
 
   const handleZoomChange = (value: number[]): void => {

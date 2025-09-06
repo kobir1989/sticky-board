@@ -6,19 +6,14 @@ import {
   removeNote,
   updateBoardCord,
   updateNoteCord,
-  updateNotes
+  updateNotes,
+  useNoteSlice
 } from '@/redux/features/noteSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useAppDispatch } from '@/redux/hooks';
 import type { BoardRef, ChangeEvent, ColorType, NoteRef, NoteTypes } from '@/types';
 
 const StickyBoard = () => {
-  const {
-    notes,
-    scale,
-    isShowGrid,
-    x: boardX,
-    y: boardY
-  } = useAppSelector((store) => store.noteSlice);
+  const { notes, scale, isShowGrid, x: boardX, y: boardY } = useNoteSlice();
   const dispatch = useAppDispatch();
   const [activeDraggedNote, setActiveDraggedNote] = useState<null | string>(null);
 
