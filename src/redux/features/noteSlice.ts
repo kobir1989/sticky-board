@@ -31,35 +31,35 @@ export const noteSlice = createSlice({
     toggleSettingsPanel: (state) => {
       state.isShowSettingsPanel = !state.isShowSettingsPanel;
     },
-    handleZoom: (state, action: PayloadAction<number>) => {
-      const zoom = action.payload;
+    handleZoom: (state, { payload }: PayloadAction<number>) => {
+      const zoom = payload;
       state.scale = state.scale = Math.min(Math.max(zoom, MIN_ZOOM), MAX_ZOOM);
     },
-    addNewNote: (state, action: PayloadAction<NoteTypes>) => {
-      state.notes = [...state.notes, action.payload];
+    addNewNote: (state, { payload }: PayloadAction<NoteTypes>) => {
+      state.notes = [...state.notes, payload];
     },
-    removeNote: (state, action: PayloadAction<string>) => {
-      const updatedNotes = state.notes.filter((note) => note.id !== action.payload);
+    removeNote: (state, { payload }: PayloadAction<string>) => {
+      const updatedNotes = state.notes.filter((note) => note.id !== payload);
       state.notes = updatedNotes;
     },
-    updateNotes: (state, action: PayloadAction<NoteTypes>) => {
-      const index = state.notes.findIndex((note) => note.id === action.payload.id);
+    updateNotes: (state, { payload }: PayloadAction<NoteTypes>) => {
+      const index = state.notes.findIndex((note) => note.id === payload.id);
       if (index !== -1) {
-        state.notes[index] = action.payload;
+        state.notes[index] = payload;
       }
     },
-    setDefaultColor: (state, action: PayloadAction<ColorType>) => {
-      state.defaultNoteColor = action.payload;
+    setDefaultColor: (state, { payload }: PayloadAction<ColorType>) => {
+      state.defaultNoteColor = payload;
     },
-    toggleMiniMap: (state, action: PayloadAction<boolean>) => {
-      state.isShowMiniMap = action.payload;
+    toggleMiniMap: (state, { payload }: PayloadAction<boolean>) => {
+      state.isShowMiniMap = payload;
     },
-    toggleInfiniteGrid: (state, action: PayloadAction<boolean>) => {
-      state.isShowGrid = action.payload;
+    toggleInfiniteGrid: (state, { payload }: PayloadAction<boolean>) => {
+      state.isShowGrid = payload;
     },
-    updateBoardCord: (state, action: PayloadAction<PositionTypes>) => {
-      state.x = action.payload.x;
-      state.y = action.payload.y;
+    updateBoardCord: (state, { payload }: PayloadAction<PositionTypes>) => {
+      state.x = payload.x;
+      state.y = payload.y;
     },
     updateNoteCord: (state, { payload }: PayloadAction<UpdateNoteAction>) => {
       const findNoteIndex = state.notes.findIndex((note) => note.id === payload.id);
@@ -74,7 +74,7 @@ export const noteSlice = createSlice({
         };
       }
     },
-    navigateBoardFromMiniMap: (state, { payload }: PayloadAction<{ x: number; y: number }>) => {
+    navigateBoardFromMiniMap: (state, { payload }: PayloadAction<PositionTypes>) => {
       state.x = payload.x;
       state.y = payload.y;
     },

@@ -19,7 +19,8 @@ const SettingsPanel = () => {
     (state) => state.noteSlice
   );
 
-  const handleCloseSettingsPanel = () => {
+  const handleCloseSettingsPanel = (e: React.MouseEvent) => {
+    e.stopPropagation();
     dispatch(toggleSettingsPanel());
   };
 
@@ -41,6 +42,7 @@ const SettingsPanel = () => {
 
   return (
     <motion.div
+      onClick={(e) => handleCloseSettingsPanel(e)}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -48,6 +50,7 @@ const SettingsPanel = () => {
       className="fixed top-0 left-0 z-20 h-screen w-screen bg-black/10 backdrop-blur-sm"
     >
       <motion.div
+        onClick={(e) => e.stopPropagation()}
         initial={{ x: 300, rotate: 3, opacity: 0 }}
         animate={{ x: 0, rotate: 0, opacity: 1 }}
         exit={{ x: 300, rotate: 3, opacity: 1 }}
@@ -64,7 +67,11 @@ const SettingsPanel = () => {
               <p className="text-sm text-gray-500">Customize your workspace</p>
             </div>
           </div>
-          <Button variant="ghost" className="text-gray-500" onClick={handleCloseSettingsPanel}>
+          <Button
+            variant="ghost"
+            className="text-gray-500"
+            onClick={(e) => handleCloseSettingsPanel(e)}
+          >
             <X />
           </Button>
         </div>

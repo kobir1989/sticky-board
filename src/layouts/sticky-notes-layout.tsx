@@ -35,7 +35,7 @@ const StickyNotesLayout = ({ children }: StickyNotesLayoutProps) => {
         createdDate: getFormattedDateAndTime()
       })
     );
-  }, []);
+  }, [defaultNoteColor.id]);
 
   return (
     <main className="h-screen w-screen overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-4">
