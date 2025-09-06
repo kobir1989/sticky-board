@@ -81,7 +81,7 @@ export const noteSlice = createSlice({
     resetSettings: (state) => {
       state.defaultNoteColor = DEFAULT_COLOR;
       state.isShowGrid = true;
-      state.isShowMiniMap = false;
+      state.isShowMiniMap = true;
       state.scale = 1;
     }
   }

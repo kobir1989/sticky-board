@@ -1,33 +1,20 @@
-import { Plus, Settings, Share2 } from 'lucide-react';
-import { v4 as uuidv4 } from 'uuid';
+import { Plus, Settings } from 'lucide-react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
-import { toggleSettingsPanel, addNewNote } from '@/redux/features/noteSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { generateRandomPosition, getFormattedDateAndTime } from '@/utils';
+import { toggleSettingsPanel } from '@/redux/features/noteSlice';
+import { useAppDispatch } from '@/redux/hooks';
+import type { NoteTypes } from '@/types';
 
-const Navbar = () => {
+interface NavbarProps {
+  onAddNewNote: () => void;
+  notes: NoteTypes[];
+}
+
+const Navbar = ({ onAddNewNote, notes }: NavbarProps) => {
   const dispatch = useAppDispatch();
-  const { notes, defaultNoteColor } = useAppSelector((store) => store.noteSlice);
 
   const handleToggleSettingsPanel = () => {
     dispatch(toggleSettingsPanel());
-  };
-
-  const handleAddNewNote = () => {
-    dispatch(
-      addNewNote({
-        id: uuidv4(),
-        text: '',
-        color: {
-          ...defaultNoteColor
-        },
-        position: {
-          x: generateRandomPosition().x,
-          y: generateRandomPosition().y
-        },
-        createdDate: getFormattedDateAndTime()
-      })
-    );
   };
 
   return (
@@ -37,15 +24,11 @@ const Navbar = () => {
           <p className="font-bold text-gray-600">{notes?.length}</p>
         </div>
         <div className="flex items-center gap-2">
-          <Button size="sm" variant="outline">
-            <Share2 />
-            Share
-          </Button>
           <Button size="sm" variant="outline" onClick={handleToggleSettingsPanel}>
             <Settings />
             Settings
           </Button>
-          <Button size="sm" onClick={handleAddNewNote}>
+          <Button size="sm" onClick={onAddNewNote}>
             <Plus />
             Add Note
           </Button>
@@ -55,4 +38,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default React.memo(Navbar);

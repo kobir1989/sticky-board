@@ -27,7 +27,7 @@ const Note = ({
   return (
     <motion.div
       onMouseDown={(e) => onMouseDown(e, note)}
-      className={`${isDraggedNoteId ? 'z-10' : ''} note-container flex min-h-[13rem] min-w-[16rem] cursor-move flex-col justify-between rounded-2xl border-2 shadow-2xl hover:z-10 ${note.color.border} ${note.color.background} p-4`}
+      className={`${isDraggedNoteId ? 'z-10' : ''} note-container flex min-h-[13rem] min-w-[16rem] cursor-move flex-col justify-between rounded-2xl border-2 shadow-2xl ${note.color.border} ${note.color.background} p-4`}
       initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
       animate={{
         opacity: 1,
@@ -62,9 +62,10 @@ const Note = ({
         <Button
           onClick={() => onDeleteNote(note.id)}
           variant="ghost"
-          className="hover:bg-transparent"
+          className="ml-1 text-gray-500 hover:bg-red-100 hover:text-red-500"
+          size="icon"
         >
-          <Trash2 className="text-gray-500 hover:text-red-400" size={15} />
+          <Trash2 className="text-current" size={15} />
         </Button>
       </div>
       <div className="mb-2 h-full w-full rounded-lg shadow-sm">

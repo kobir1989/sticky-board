@@ -32,7 +32,6 @@ const StickyBoard = () => {
     startNoteCord: { x: 0, y: 0 },
     startNoteMouseCord: { x: 0, y: 0 }
   });
-
   // Zoom in and out
   const handleMouseWheel = (e: React.WheelEvent) => {
     const zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
@@ -151,7 +150,7 @@ const StickyBoard = () => {
         className="h-full w-full"
         style={{
           transform: `translate(${boardX}px, ${boardY}px) scale(${scale})`,
-          transformOrigin: '0 0'
+          transformOrigin: 'center center'
         }}
       >
         {notes.map((note) => (

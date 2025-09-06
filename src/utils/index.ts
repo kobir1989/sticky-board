@@ -1,8 +1,8 @@
-export const generateRandomPosition = (): { x: number; y: number } => {
-  const centerX = window.innerWidth / 2;
-  const centerY = window.innerHeight / 2;
+export const generateRandomPosition = (scale: number): { x: number; y: number } => {
+  const centerX = (window.innerWidth / 2) * scale;
+  const centerY = (window.innerHeight / 2) * scale;
 
-  const offset = 150;
+  const offset = 80;
   const x = centerX + Math.floor(Math.random() * (offset * 2) - offset);
   const y = centerY + Math.floor(Math.random() * (offset * 2) - offset);
 
