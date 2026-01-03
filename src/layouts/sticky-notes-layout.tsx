@@ -40,6 +40,7 @@ const StickyNotesLayout = ({ children }: StickyNotesLayoutProps) => {
       <header>
         <Navbar onAddNewNote={handleAddNewNote} notes={notes} />
         <AnimatePresence>{isShowSettingsPanel && <SettingsPanel />}</AnimatePresence>
+        
       </header>
       {children}
       <div className="fixed right-4 bottom-6 z-10">
